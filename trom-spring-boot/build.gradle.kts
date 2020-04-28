@@ -14,7 +14,10 @@ java.sourceCompatibility = JavaVersion.VERSION_11
 repositories {
 	mavenCentral()
 	maven { url = uri("https://repo.spring.io/milestone") }
+	maven { url = uri("https://dl.bintray.com/s1m0nw1/KtsRunner")}
 }
+
+val seleniumVersion="4.0.0-alpha-5"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
@@ -23,6 +26,21 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+
+	implementation(group= "org.seleniumhq.selenium", name= "selenium-java", version= seleniumVersion)
+	implementation(group= "org.seleniumhq.selenium", name= "selenium-firefox-driver", version= seleniumVersion)
+	implementation(group= "org.seleniumhq.selenium", name= "selenium-chrome-driver", version= seleniumVersion)
+	implementation(group= "org.seleniumhq.selenium", name= "selenium-safari-driver", version= seleniumVersion)
+	implementation(group= "org.seleniumhq.selenium", name= "selenium-opera-driver", version= seleniumVersion)
+
+	implementation(kotlin("script-runtime"))
+	implementation(kotlin("script-util"))
+	implementation(kotlin("compiler-embeddable"))
+
+
+	implementation(group="de.swirtz", name="ktsRunner", version = "0.0.8")
+
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
 	}

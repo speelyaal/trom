@@ -1,0 +1,9 @@
+package com.speelyaal.trom.example
+
+import com.speelyaal.trom.dsl.testSuite
+
+testSuite("Login-Suite") {
+    testCases {
+
+    }
+}

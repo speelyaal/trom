@@ -1,6 +1,7 @@
 package com.speelyaal.trom.runners
 
 import com.speelyaal.trom.config.ConfigLoader
+import com.speelyaal.trom.dsl.TestCase
 import com.speelyaal.trom.dsl.TestSuite
 import com.speelyaal.trom.dsl.testSuite
 import de.swirtz.ktsrunner.objectloader.KtsObjectLoader
@@ -32,8 +33,22 @@ class TestSuitesRunner {
             try {
               val testSuite : TestSuite =  KtsObjectLoader().load<TestSuite>(scriptContent)
 
-                testSuite.testCases.forEach{
-                    println("Test cases $it")
+                testSuite.testCases.forEach{ case->
+
+
+                        var testCaseToRun = this.configLoader.testCases[case]!!.readText()
+                        println(testCaseToRun)
+                        val testCase : TestCase =  KtsObjectLoader().load<TestCase>(testCaseToRun)
+                        println("Test case name is  ${testCase.name}")
+
+                        testCase.testSteps.forEach {testStep ->
+                            println("Test step anem is ${testStep.name}")
+
+                            println("Test step Type ${testStep.action.type}")
+                        }
+
+
+
                 }
 
 

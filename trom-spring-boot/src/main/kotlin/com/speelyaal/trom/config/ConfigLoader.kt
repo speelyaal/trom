@@ -23,6 +23,12 @@ class ConfigLoader {
             }
         }
 
+        File(tromProperties.rootPath + "/testcases").walk().forEach {testCaseFile ->
+            if(testCaseFile.isFile && testCaseFile.extension == "kts") {
+                this.testCases[testCaseFile.nameWithoutExtension] = testCaseFile
+            }
+        }
+
     }
 
 }

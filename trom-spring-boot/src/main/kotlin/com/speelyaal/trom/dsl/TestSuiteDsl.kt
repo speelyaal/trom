@@ -11,7 +11,7 @@ enum class Browsers {
 }
 
 @TromTestSuiteDslMarker
-class TestSuite {
+class TestSuite(var name: String="") {
 
     var testCases: ArrayList<String> = ArrayList();
     var browsers: ArrayList<Browsers> = ArrayList();
@@ -40,4 +40,4 @@ class TestSuite {
 
 }
 
-fun testSuite(testSuiteName: String, lambda: TestSuite.() -> Unit) : TestSuite =  TestSuite().apply(lambda);
+fun testSuite(testSuiteName: String, lambda: TestSuite.() -> Unit) : TestSuite =  TestSuite(testSuiteName).apply(lambda);

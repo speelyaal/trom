@@ -6,7 +6,5 @@ testSuite("Login-Suite") {
 
     testCases {
         +"login"
-        +"navigateToClouds"
-
     }
 }

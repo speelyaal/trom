@@ -1,6 +1,7 @@
 package com.speelyaal.trom.runners
 
 import com.speelyaal.trom.config.ConfigLoader
+import com.speelyaal.trom.dsl.TestSuite
 import com.speelyaal.trom.dsl.testSuite
 import de.swirtz.ktsrunner.objectloader.KtsObjectLoader
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,9 +30,17 @@ class TestSuitesRunner {
             val scriptContent = suite.value.readText()
             println(scriptContent)
             try {
+              val testSuite : TestSuite =  KtsObjectLoader().load<TestSuite>(scriptContent)
+
+                testSuite.testCases.forEach{
+                    println("Test cases $it")
+                }
 
 
-                KtsObjectLoader().load<Unit>(scriptContent)!!
+                testSuite.browsers.forEach{
+                    println("Browsers $it")
+                }
+
             }catch (exception: IllegalArgumentException){
                 println("error after executing script")
             }

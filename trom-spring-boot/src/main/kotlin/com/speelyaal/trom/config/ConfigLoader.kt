@@ -1,5 +1,6 @@
 package com.speelyaal.trom.config
 
+import org.openqa.selenium.firefox.FirefoxDriver
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.io.File
@@ -13,6 +14,8 @@ class ConfigLoader {
 
     var testSuites: HashMap<String, File> = HashMap()
     var testCases: HashMap<String, File> = HashMap()
+
+    lateinit var firefoxDriver: FirefoxDriver
 
     @PostConstruct
     private fun loadConfigurations(){
@@ -28,6 +31,9 @@ class ConfigLoader {
                 this.testCases[testCaseFile.nameWithoutExtension] = testCaseFile
             }
         }
+
+
+
 
     }
 

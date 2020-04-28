@@ -17,7 +17,7 @@ repositories {
 	maven { url = uri("https://dl.bintray.com/s1m0nw1/KtsRunner")}
 }
 
-val seleniumVersion="4.0.0-alpha-5"
+val seleniumVersion="4.0.0-alpha-4"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
@@ -27,6 +27,11 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 
+	//Logging
+	//implementation("org.springframework.boot:spring-boot-starter-log4j2")
+
+
+	//Selenium
 	implementation(group= "org.seleniumhq.selenium", name= "selenium-java", version= seleniumVersion)
 	implementation(group= "org.seleniumhq.selenium", name= "selenium-firefox-driver", version= seleniumVersion)
 	implementation(group= "org.seleniumhq.selenium", name= "selenium-chrome-driver", version= seleniumVersion)
@@ -34,15 +39,17 @@ dependencies {
 	implementation(group= "org.seleniumhq.selenium", name= "selenium-opera-driver", version= seleniumVersion)
 
 	implementation(kotlin("script-runtime"))
-	implementation(kotlin("script-util"))
-	implementation(kotlin("compiler-embeddable"))
+	//implementation(kotlin("script-util"))
+	//implementation(kotlin("compiler-embeddable"))
 
 
+	//FIXME: try to have own script runner
 	implementation(group="de.swirtz", name="ktsRunner", version = "0.0.8")
 
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {
 		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+		exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
 	}
 	testImplementation("io.projectreactor:reactor-test")
 }

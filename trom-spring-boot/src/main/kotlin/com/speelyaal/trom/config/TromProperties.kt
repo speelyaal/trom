@@ -6,4 +6,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 class TromProperties {
 
     lateinit var rootPath: String
+    lateinit var firefoxDriverPath: String
+
+    /*class Browser{
+        var driverPath: String =""
+        var driverName: String= ""
+    }*/
+
 }

@@ -2,3 +2,4 @@ server:
   port: 9003
 trom:
   rootPath: examples
+  firefoxDriverPath: "/Users/ashok/SpeelYaal/Technology/Workspace/Tools/selenium/geckodriver"

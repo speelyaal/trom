@@ -26,10 +26,26 @@ class TestStep(var name: String="") {
         this.action = givenAction
     }
 
+    fun enterText(lambda: Action.() -> Unit) {
+        val givenAction = Action()
+        givenAction.lambda();
+        // println("I am inside lambda " + testString)
+        givenAction.type = ActionType.enterText
+        this.action = givenAction
+    }
+
     fun xpath(xpath: String=""): String{//HTMLElement
 
         println(xpath);
         return String()
+    }
+
+    fun id(id: String=""){
+
+    }
+
+    fun name(name: String=""){
+
     }
 
 

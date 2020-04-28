@@ -15,6 +15,7 @@ class TestSuite(var name: String="") {
 
     var testCases: ArrayList<String> = ArrayList();
     var browsers: ArrayList<Browsers> = ArrayList();
+    var url: String =""
 
     val chrome = Browsers.chrome
     val firefox = Browsers.firefox
@@ -30,6 +31,10 @@ class TestSuite(var name: String="") {
     fun browsers(vararg browsers: Browsers)  {
         val testString=  String()
         this.browsers.addAll(browsers)
+    }
+
+    fun url(url: String){
+        this.url = url
     }
 
 

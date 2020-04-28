@@ -2,9 +2,10 @@ import com.speelyaal.trom.dsl.*
 
 testSuite("Login-Suite") {
 
-    browsers(chrome,firefox)
+    browsers(firefox)
+    url("https://www.google.com")
 
     testCases {
-        +"login"
+        +"search"
     }
 }

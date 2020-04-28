@@ -16,6 +16,10 @@ class TestCase(var name: String="") {
        this.testSteps.add(testStep)
     }
 
+    fun step(testStepName: String="", lambda: TestStep.() -> Unit){
+        this.testStep(testStepName, lambda)
+    }
+
 
 }
 

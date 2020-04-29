@@ -1,52 +1,82 @@
 package com.speelyaal.trom.dsl
 
+import org.openqa.selenium.By
+
 @DslMarker
 annotation class TromTestStepDslMarker
 
 enum class ActionType {
     click,
-    enterText
+    enterText,
+    pressKey,
+    waitForElement
 }
 
-class Action{
-    var type: ActionType= ActionType.click
-    var element = ""
+enum class SelectorType{
+    xpath,
+    id,
+    nameAttribute,
+    css,
+    linkText
 }
+
+
 
 @TromTestStepDslMarker
 class TestStep(var name: String="") {
 
-    lateinit var action: Action
+    var element: String = ""
+    var value: Any = ""
+    var actionType = ActionType.click
+    var selectorType = SelectorType.xpath
 
-    fun click(lambda: Action.() -> Unit) {
-        val givenAction = Action()
-        givenAction.lambda();
+    fun click(lambda: TestStep.() -> Unit) {
+        val testStep = TestStep()
+        testStep.lambda();
         // println("I am inside lambda " + testString)
-        givenAction.type = ActionType.click
-        this.action = givenAction
+        this.element = testStep.element
+        this.value = testStep.value
+        this.actionType = ActionType.click
+
     }
 
-    fun enterText(lambda: Action.() -> Unit) {
-        val givenAction = Action()
-        givenAction.lambda();
+    fun enterText(value: String, lambda: TestStep.() -> Unit): TestStep {
+        val testStep = TestStep()
+        testStep.lambda();
         // println("I am inside lambda " + testString)
-        givenAction.type = ActionType.enterText
-        this.action = givenAction
+        this.element = testStep.element
+        this.value = if (value.isNullOrBlank()) testStep.value else value
+        this.actionType = ActionType.enterText
+        return this
     }
+
 
     fun xpath(xpath: String=""): String{//HTMLElement
-
-        println(xpath);
-        return String()
+        this.selectorType = SelectorType.xpath
+        return xpath
     }
 
-    fun id(id: String=""){
-
+    fun name(name: String=""): String{//HTMLElement
+        this.selectorType = SelectorType.nameAttribute
+        return name
     }
 
-    fun name(name: String=""){
-
+    fun id(id: String=""): String{//HTMLElement
+        this.selectorType = SelectorType.id
+        return id
     }
+
+    fun css(css: String=""): String{//HTMLElement
+        this.selectorType = SelectorType.css
+        return css
+    }
+
+    fun linkText(linkText: String=""): String{//HTMLElement
+        this.selectorType = SelectorType.linkText
+        return linkText
+    }
+
+
 
 
 

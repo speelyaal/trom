@@ -22,47 +22,30 @@ class TestSuitesRunner {
 
 
 
+    @PostConstruct
     fun executeTestSuites() {
         println("execution of test suites called")
 
-        this.configLoader.testSuites.forEach { testSuiteScript ->
-
-
-            val scriptContent = testSuiteScript.value.readText()
-
+        this.configLoader.testSuites.forEach { testSuiteEntry ->
             try {
+                var testSuite= testSuiteEntry.value
 
-                LOG.info("Loading Test Suite Script : ${testSuiteScript.key}")
-                val testSuite: TestSuite = KotlinScriptRunner.executeScript(scriptContent)
-                LOG.info("Executing Test Suite : ${testSuite.name}")
+                LOG.info("[TEST-SUITE] Executing Test Suite : ${testSuite.name}")
 
                 testSuite.browsers.forEach { browser->
 
                     testStepRunner.openBrowser(browser, testSuite.url)
 
                     testSuite.testCases.forEach { case ->
-
-
-                        LOG.info("Loading Test Case Script : ${case}")
-                        var testCaseToRun = this.configLoader.testCases[case]!!.readText()
-
-
-                        val testCase: TestCase = KotlinScriptRunner.executeScript(testCaseToRun)
-                        LOG.info("Executing Test Case : ${testCase.name}")
-
-
-
+                        var testCase: TestCase? = this.configLoader.testCases[case]
+                        LOG.info("[TEST-CASE] Executing Test Case : ${testCase!!.name}")
                         testCase.testSteps.forEach { testStep ->
-                            LOG.info("Executing Test Step : ${testStep.name}")
+                            LOG.info("[TEST-STEP] Executing Test Step : ${testStep.name}")
                             testStepRunner.executeTestStep(testStep);
-
                         }
-
-
                     }
 
                 }
-
 
                 testSuite.browsers.forEach {
                     println("Browsers $it")

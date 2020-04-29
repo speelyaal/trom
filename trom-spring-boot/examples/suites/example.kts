@@ -1,9 +1,8 @@
 import com.speelyaal.trom.dsl.*
 
-testSuite("Login-Suite") {
-
+testSuite("Search-Suite") {
     browsers(firefox)
-    url("https://www.google.com")
+    url("https://stackoverflow.com/")
 
     testCases {
         +"search"

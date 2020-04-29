@@ -17,22 +17,12 @@ class TromApplication
 @Autowired
 lateinit var configLoader: ConfigLoader
 
-@Autowired
-lateinit var testSuitesRunner: TestSuitesRunner
 
 fun main(args: Array<String>) {
 	runApplication<TromApplication>(*args)
 
-
- // executeTestSuites()
-
 }
 
 
-fun executeTestSuites(){
-	println("Post construct called");
-	System.setProperty("webdriver.gecko.driver", "/Users/ashok/SpeelYaal/Technology/Workspace/Tools/selenium/geckodriver")
-	configLoader.firefoxDriver = FirefoxDriver()
-	testSuitesRunner.executeTestSuites()
-}
+
 

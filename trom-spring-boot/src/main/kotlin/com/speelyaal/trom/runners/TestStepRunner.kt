@@ -23,6 +23,7 @@ import org.springframework.stereotype.Component
 import java.time.Duration
 import java.util.concurrent.TimeUnit
 import  org.openqa.selenium.NoSuchElementException
+import java.lang.Exception
 
 @Component
 class TestStepRunner {
@@ -53,13 +54,14 @@ class TestStepRunner {
 
     fun executeTestStep(testStep: TestStep) {
 
+        try {
 
             when (testStep.actionType) {
                 ActionType.enterText -> this.getElement(testStep)!!.sendKeys(testStep.value.toString())
                 ActionType.pressKey -> this.getElement(testStep)!!.sendKeys(testStep.value as Keys)
                 ActionType.click -> this.getElement(testStep)!!.click()
                 ActionType.waitForElement -> {
-                   val wait = FluentWait(this.webBrowserDriver)
+                    val wait = FluentWait(this.webBrowserDriver)
                             .withTimeout(Duration.ofSeconds(30))
                             .pollingEvery(Duration.ofSeconds(3))
                             .ignoring(NoSuchElementException::class.java)
@@ -72,6 +74,10 @@ class TestStepRunner {
 
                 }
             }
+            this.config.currentTest.pass("Test step ${testStep.name} passed ")
+        }catch (exception: Exception){
+            this.config.currentTest.fail("Test step ${testStep.name} failed " + exception.message)
+        }
 
 
 

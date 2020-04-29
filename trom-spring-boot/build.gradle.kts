@@ -19,6 +19,7 @@ repositories {
 
 //val seleniumVersion="4.0.0-alpha-5"
 val seleniumVersion="3.141.59"
+val extentReportVersion = "4.1.5"
 
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
@@ -30,6 +31,9 @@ dependencies {
 
 	//Logging
 	//implementation("org.springframework.boot:spring-boot-starter-log4j2")
+
+	//Reporting
+	implementation(group="com.aventstack",name="extentreports", version= extentReportVersion )
 
 
 	//Selenium

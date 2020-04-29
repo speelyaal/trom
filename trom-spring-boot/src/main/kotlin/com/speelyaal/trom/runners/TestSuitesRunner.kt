@@ -22,11 +22,18 @@ class TestSuitesRunner {
 
 
 
+
+
     @PostConstruct
     fun executeTestSuites() {
         println("execution of test suites called")
 
         this.configLoader.testSuites.forEach { testSuiteEntry ->
+            //TODO: Make report directory for each test suite
+
+            this.configLoader.currentTest = this.configLoader.testReport.createTest(testSuiteEntry.key)
+
+
             try {
                 var testSuite= testSuiteEntry.value
 
@@ -43,21 +50,27 @@ class TestSuitesRunner {
                             LOG.info("[TEST-STEP] Executing Test Step : ${testStep.name}")
                             testStepRunner.executeTestStep(testStep);
                         }
+
+                        this.configLoader.currentTest.pass("Test Case ${case} passed for ${browser}")
                     }
 
+                    this.configLoader.currentTest.pass("Test suite ${testSuiteEntry.key} passed for ${browser}")
+
                 }
 
-                testSuite.browsers.forEach {
-                    println("Browsers $it")
-                }
+
 
             } catch (exception: IllegalArgumentException) {
                 println("error after executing script")
+                this.configLoader.currentTest.fail("Test suite ${testSuiteEntry.key} failed " + exception.message)
+
             }
             // println(fromScript)
 
 
+
         }
+        this.configLoader.testReport.flush()
     }
 
 }

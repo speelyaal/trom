@@ -1,9 +1,12 @@
 package com.speelyaal.trom.config
 
+import com.aventstack.extentreports.ExtentReports
+import com.aventstack.extentreports.ExtentTest
+import com.aventstack.extentreports.reporter.ExtentAventReporter
+import com.aventstack.extentreports.reporter.ExtentHtmlReporter
 import com.speelyaal.trom.dsl.TestCase
 import com.speelyaal.trom.dsl.TestSuite
 import com.speelyaal.trom.runners.KotlinScriptRunner
-import com.speelyaal.trom.runners.TestSuitesRunner
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 import org.openqa.selenium.firefox.FirefoxDriver
@@ -11,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.io.File
 import javax.annotation.PostConstruct
+
 
 @Component
 class ConfigLoader {
@@ -22,6 +26,8 @@ class ConfigLoader {
 
     var testSuites: HashMap<String, TestSuite> = HashMap()
     var testCases: HashMap<String, TestCase> = HashMap()
+    lateinit var testReport: ExtentReports
+    lateinit var currentTest: ExtentTest
 
     lateinit var firefoxDriver: FirefoxDriver
 
@@ -55,8 +61,10 @@ class ConfigLoader {
             }
         }
 
-
-
+        this.testReport = ExtentReports()
+     //   val avent = ExtentAventReporter(tromProperties.rootPath + "/reports")
+        val htmlReporter = ExtentHtmlReporter(tromProperties.rootPath + "/reports/report.html")
+        this.testReport.attachReporter(htmlReporter)
 
     }
 

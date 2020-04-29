@@ -6,11 +6,12 @@ import com.speelyaal.trom.runners.TestSuitesRunner
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.runApplication
 import javax.annotation.PostConstruct
 
-@SpringBootApplication
+@SpringBootApplication(exclude = [MongoAutoConfiguration::class])
 @EnableConfigurationProperties(TromProperties::class)
 class TromApplication
 

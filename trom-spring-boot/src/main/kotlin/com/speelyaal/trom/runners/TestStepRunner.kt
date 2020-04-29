@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import java.time.Duration
 import java.util.concurrent.TimeUnit
+import  org.openqa.selenium.NoSuchElementException
 
 @Component
 class TestStepRunner {
@@ -53,30 +54,25 @@ class TestStepRunner {
     fun executeTestStep(testStep: TestStep) {
 
 
-        var element: WebElement? =  if (testStep.actionType != ActionType.waitForSeconds) this.getElement(testStep) else null
-
-
-        if (element != null || testStep.actionType == ActionType.waitForSeconds) {
             when (testStep.actionType) {
-                ActionType.enterText -> element!!.sendKeys(testStep.value.toString())
-                ActionType.pressKey -> element!!.sendKeys(testStep.value as Keys)
-                ActionType.click -> element!!.click()
+                ActionType.enterText -> this.getElement(testStep)!!.sendKeys(testStep.value.toString())
+                ActionType.pressKey -> this.getElement(testStep)!!.sendKeys(testStep.value as Keys)
+                ActionType.click -> this.getElement(testStep)!!.click()
                 ActionType.waitForElement -> {
-                   val wait = FluentWait<WebDriver>(this.webBrowserDriver)
+                   val wait = FluentWait(this.webBrowserDriver)
                             .withTimeout(Duration.ofSeconds(30))
                             .pollingEvery(Duration.ofSeconds(3))
                             .ignoring(NoSuchElementException::class.java)
                     wait.until(ExpectedConditions.elementToBeClickable(this.getBy(testStep)))
+
+                    LOG.debug("I am waiting until this appear ${testStep.element}")
                 }
                 ActionType.waitForSeconds -> {
-                    Thread.sleep(testStep.value.toString().toLong())
                     webBrowserDriver.manage().timeouts().implicitlyWait(testStep.value.toString().toLong(), TimeUnit.SECONDS)
 
                 }
             }
-        }else{
-            LOG.error("Element is null for test step :  ${testStep.element}")
-        }
+
 
 
     }
@@ -101,7 +97,7 @@ class TestStepRunner {
             SelectorType.xpath -> return By.xpath(selectorString)
             SelectorType.id -> return By.id(selectorString)
             SelectorType.css -> return By.cssSelector(selectorString)
-            SelectorType.linkText -> return By.linkText(selectorString)
+            SelectorType.linkText -> return By.partialLinkText(selectorString)
             else -> null
 
         }

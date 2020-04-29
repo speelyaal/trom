@@ -1,7 +1,7 @@
 testCase("Login To Stack Overflow") {
 
     click("Click Login Button") {
-        element = linkText("Log in")
+        element = linkText("Log")
     }
 
     enterText("Input email", value = "ashok@test.com") {
@@ -14,6 +14,8 @@ testCase("Login To Stack Overflow") {
 
     click("Click Login Button") {
         element = id("submit-button")
+    }.waitForElement {
+        element = containsText("The email or password is incorrect.")
     }
 
 }

@@ -1,7 +1,5 @@
 package com.speelyaal.trom.dsl
 
-import org.openqa.selenium.By
-
 @DslMarker
 annotation class TromTestStepDslMarker
 
@@ -19,6 +17,7 @@ enum class SelectorType{
     nameAttribute,
     css,
     linkText
+
 }
 
 
@@ -55,6 +54,11 @@ class TestStep(var name: String="") {
     fun linkText(linkText: String=""): String{//HTMLElement
         this.selectorType = SelectorType.linkText
         return linkText
+    }
+
+    fun containsText(textValue: String=""): String{
+        this.selectorType = SelectorType.xpath
+        return "//*[contains(text(), '${textValue}')]"
     }
 
 

@@ -56,7 +56,6 @@ class TestCase(var name: String="") {
     fun click(name: String, lambda: TestStep.() -> Unit): TestCase {
         val testStep = TestStep(name)
         testStep.lambda();
-        // println("I am inside lambda " + testString)
 
         testStep.actionType = ActionType.click
         this.testSteps.add(testStep)
@@ -64,10 +63,22 @@ class TestCase(var name: String="") {
         return this
     }
 
+  /*  @JvmName("clickElement")
+    fun click(name: String, lambda: String.() -> Unit): TestCase {
+        val testStep = TestStep(name)
+        val elementSelector = String()
+        elementSelector.lambda();
+        testStep.element= elementSelector
+        testStep.actionType = ActionType.click
+        this.testSteps.add(testStep)
+
+        return this
+    }*/
+
+
     fun enterText(stepName: String = "", value: String,  lambda: TestStep.() -> Unit): TestCase {
         val testStep = TestStep(stepName)
         testStep.lambda();
-        // println("I am inside lambda " + testString)
 
         testStep.value = if (value.isNullOrBlank()) testStep.value else value
         testStep.actionType = ActionType.enterText
@@ -75,6 +86,19 @@ class TestCase(var name: String="") {
 
         return this
     }
+
+  /*@JvmName("enterTextValue")
+    fun enterText(stepName: String = "", value: String,  lambda: String.() -> Unit): TestCase {
+        val testStep = TestStep(stepName)
+        val elementSelector = String()
+        elementSelector.lambda();
+        testStep.element = elementSelector
+        testStep.value = if (value.isNullOrBlank()) testStep.value else value
+        testStep.actionType = ActionType.enterText
+        this.testSteps.add(testStep)
+
+        return this
+    }*/
 
 
 

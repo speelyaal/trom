@@ -33,7 +33,9 @@ class ConfigLoader {
 
 
                 LOG.info("Loading Test Suite Script : ${testSuiteFile.name}")
-                val testSuite: TestSuite = KotlinScriptRunner.executeScript(testSuiteFile.readText())
+                var suiteScriptContent: String = "import com.speelyaal.trom.dsl.*\n"
+                suiteScriptContent += testSuiteFile.readText()
+                val testSuite: TestSuite = KotlinScriptRunner.executeScript(suiteScriptContent)
            //     this.testSuites[testSuiteFile.nameWithoutExtension] = testSuite
                 this.testSuites[testSuite.name] = testSuite
 
@@ -44,7 +46,10 @@ class ConfigLoader {
             if(testCaseFile.isFile && testCaseFile.extension == "kts") {
 
                 LOG.info("Loading Test Case Script : ${testCaseFile.name}")
-                val testCase: TestCase = KotlinScriptRunner.executeScript(testCaseFile.readText())
+
+                var caseScriptContent: String = "import com.speelyaal.trom.dsl.*\n"
+                caseScriptContent += testCaseFile.readText()
+                val testCase: TestCase = KotlinScriptRunner.executeScript(caseScriptContent)
                 this.testCases[testCaseFile.nameWithoutExtension] = testCase
                 this.testCases[testCase.name] = testCase
             }

@@ -11,12 +11,17 @@ import org.apache.logging.log4j.Logger
 import org.openqa.selenium.By
 import org.openqa.selenium.By.linkText
 import org.openqa.selenium.Keys
+import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.remote.RemoteWebDriver
 import org.openqa.selenium.support.ui.ExpectedConditions
+import org.openqa.selenium.support.ui.FluentWait
+import org.openqa.selenium.support.ui.WebDriverWait
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import java.time.Duration
+import java.util.concurrent.TimeUnit
 
 @Component
 class TestStepRunner {
@@ -47,14 +52,27 @@ class TestStepRunner {
 
     fun executeTestStep(testStep: TestStep) {
 
-        var element = this.getElement(testStep)
 
-        if (element != null) {
+        var element: WebElement? =  if (testStep.actionType != ActionType.waitForSeconds) this.getElement(testStep) else null
+
+
+        if (element != null || testStep.actionType == ActionType.waitForSeconds) {
             when (testStep.actionType) {
-                ActionType.enterText -> element.sendKeys(testStep.value.toString())
-                ActionType.pressKey -> element.sendKeys(testStep.value as Keys)
-                ActionType.click -> element.click()
-                ActionType.waitForElement -> ExpectedConditions.visibilityOfElementLocated(this.getBy(testStep))
+                ActionType.enterText -> element!!.sendKeys(testStep.value.toString())
+                ActionType.pressKey -> element!!.sendKeys(testStep.value as Keys)
+                ActionType.click -> element!!.click()
+                ActionType.waitForElement -> {
+                   val wait = FluentWait<WebDriver>(this.webBrowserDriver)
+                            .withTimeout(Duration.ofSeconds(30))
+                            .pollingEvery(Duration.ofSeconds(3))
+                            .ignoring(NoSuchElementException::class.java)
+                    wait.until(ExpectedConditions.elementToBeClickable(this.getBy(testStep)))
+                }
+                ActionType.waitForSeconds -> {
+                    Thread.sleep(testStep.value.toString().toLong())
+                    webBrowserDriver.manage().timeouts().implicitlyWait(testStep.value.toString().toLong(), TimeUnit.SECONDS)
+
+                }
             }
         }else{
             LOG.error("Element is null for test step :  ${testStep.element}")

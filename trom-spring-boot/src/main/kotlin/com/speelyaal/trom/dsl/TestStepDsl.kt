@@ -9,7 +9,8 @@ enum class ActionType {
     click,
     enterText,
     pressKey,
-    waitForElement
+    waitForElement,
+    waitForSeconds
 }
 
 enum class SelectorType{
@@ -29,26 +30,6 @@ class TestStep(var name: String="") {
     var value: Any = ""
     var actionType = ActionType.click
     var selectorType = SelectorType.xpath
-
-    fun click(lambda: TestStep.() -> Unit) {
-        val testStep = TestStep()
-        testStep.lambda();
-        // println("I am inside lambda " + testString)
-        this.element = testStep.element
-        this.value = testStep.value
-        this.actionType = ActionType.click
-
-    }
-
-    fun enterText(value: String, lambda: TestStep.() -> Unit): TestStep {
-        val testStep = TestStep()
-        testStep.lambda();
-        // println("I am inside lambda " + testString)
-        this.element = testStep.element
-        this.value = if (value.isNullOrBlank()) testStep.value else value
-        this.actionType = ActionType.enterText
-        return this
-    }
 
 
     fun xpath(xpath: String=""): String{//HTMLElement
@@ -75,10 +56,6 @@ class TestStep(var name: String="") {
         this.selectorType = SelectorType.linkText
         return linkText
     }
-
-
-
-
 
 
 }

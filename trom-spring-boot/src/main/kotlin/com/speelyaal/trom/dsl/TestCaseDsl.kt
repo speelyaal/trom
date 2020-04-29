@@ -25,7 +25,7 @@ class TestCase(var name: String="") {
     }
 
     fun pressEnter(): TestCase{
-        var tmpStep = TestStep()
+        var tmpStep = TestStep("Press Enter Key")
         tmpStep.actionType = ActionType.pressKey
         tmpStep.element = this.testSteps.last().element
         tmpStep.value = Keys.RETURN
@@ -35,12 +35,47 @@ class TestCase(var name: String="") {
     }
 
     fun waitForElement(reason: String="", lambda: TestStep.() -> Unit): TestCase{
-        val testStep=  TestStep(reason)
+        val testStep=  TestStep()
         testStep.lambda();
         testStep.actionType = ActionType.waitForElement
+        testStep.name = if(reason.isNullOrBlank()) "Waiting for element ${testStep.element}" else reason
         this.testSteps.add(testStep)
         return this
     }
+
+    fun waitForSeconds(seconds: Long, reason: String=""): TestCase{
+        val testStep=  TestStep()
+        testStep.actionType = ActionType.waitForSeconds
+        testStep.name = if(reason.isNullOrBlank()) "Waiting for ${seconds} seconds" else reason
+        testStep.value = seconds
+        this.testSteps.add(testStep)
+        return this
+    }
+
+
+    fun click(name: String, lambda: TestStep.() -> Unit): TestCase {
+        val testStep = TestStep(name)
+        testStep.lambda();
+        // println("I am inside lambda " + testString)
+
+        testStep.actionType = ActionType.click
+        this.testSteps.add(testStep)
+
+        return this
+    }
+
+    fun enterText(stepName: String = "", value: String,  lambda: TestStep.() -> Unit): TestCase {
+        val testStep = TestStep(stepName)
+        testStep.lambda();
+        // println("I am inside lambda " + testString)
+
+        testStep.value = if (value.isNullOrBlank()) testStep.value else value
+        testStep.actionType = ActionType.enterText
+        this.testSteps.add(testStep)
+
+        return this
+    }
+
 
 
 }

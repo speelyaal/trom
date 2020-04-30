@@ -7,7 +7,8 @@ enum class Browsers {
     chrome,
     firefox,
     safari,
-    opera
+    opera,
+    edge
 }
 
 @TromTestSuiteDslMarker
@@ -20,6 +21,7 @@ class TestSuite(var name: String="") {
     val chrome = Browsers.chrome
     val firefox = Browsers.firefox
     val safari = Browsers.safari
+    val edge = Browsers.edge
 
     fun testCases(lambda: String.() -> Unit): String {
         val testString=  String()

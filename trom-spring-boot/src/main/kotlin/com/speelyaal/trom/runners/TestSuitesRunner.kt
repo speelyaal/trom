@@ -42,7 +42,7 @@ class TestSuitesRunner {
         this.config.testSuites.forEach { testSuiteEntry ->
             //TODO: Make report directory for each test suite
 
-            this.config.currentTest = this.config.testReport.createTest(testSuiteEntry.key)
+
 
 
             try {
@@ -51,6 +51,8 @@ class TestSuitesRunner {
                 LOG.info("[TEST-SUITE] Executing Test Suite : ${testSuite.name}")
 
                 testSuite.browsers.forEach { browser->
+
+                    this.config.currentTest = this.config.testReport.createTest("${testSuiteEntry.key} - ${browser}" )
 
                     testStepRunner.openBrowser(browser, testSuite.url)
 
@@ -62,10 +64,12 @@ class TestSuitesRunner {
                             testStepRunner.executeTestStep(testStep);
                         }
 
-                        this.config.currentTest.pass("Test Case ${case} passed for ${browser}")
+                        this.config.currentTest.info("Test Case ${testCase.name} completed for ${browser}")
                     }
 
-                    this.config.currentTest.pass("Test suite ${testSuiteEntry.key} passed for ${browser}")
+                    this.config.currentTest.info("Test suite ${testSuiteEntry.key} completed for ${browser}")
+
+                    testStepRunner.closeBrowser()
 
                 }
 

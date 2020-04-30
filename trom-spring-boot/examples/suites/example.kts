@@ -1,6 +1,6 @@
 
 testSuite("Search-Suite") {
-    browsers(firefox)
+    browsers(chrome, firefox, edge,safari)
     url("https://github.com/search")
 
     testCases {

@@ -14,8 +14,8 @@ testCase("Login To Github") {
 
     click("Click Sign-In Button") {
         element = xpath("//input[@name='commit']")
-    }.waitForElement {
-        element = containsText("Incorrecteeee username or password.")
+    }.waitForElement("Check - Incorrect credentials error message is displayed") {
+        element = containsText("Incorrect username or password.")
     }
 
 }

@@ -24,6 +24,9 @@ import org.springframework.stereotype.Component
 import java.time.Duration
 import java.util.concurrent.TimeUnit
 import  org.openqa.selenium.NoSuchElementException
+import org.openqa.selenium.chrome.ChromeDriver
+import org.openqa.selenium.edge.EdgeDriver
+import org.openqa.selenium.safari.SafariDriver
 import java.lang.Exception
 
 @Component
@@ -34,8 +37,6 @@ class TestStepRunner {
     @Autowired
     lateinit var config: ConfigLoader
 
-    @Autowired
-    lateinit var tromProperties: TromProperties
 
     lateinit var webBrowserDriver: RemoteWebDriver
 
@@ -43,14 +44,38 @@ class TestStepRunner {
     fun openBrowser(browser: Browsers, url: String) {
         when (browser) {
             Browsers.firefox -> {
-                System.setProperty("webdriver.gecko.driver", "/Users/ashok/SpeelYaal/Technology/Workspace/Tools/selenium/geckodriver")
+                System.setProperty("webdriver.gecko.driver", this.config.tromProperties.firefoxDriverPath)
                 this.webBrowserDriver = FirefoxDriver()
                 this.webBrowserDriver.get(url)
             }
 
+            Browsers.chrome ->{
+                System.setProperty("webdriver.chrome.driver", this.config.tromProperties.chromeDriverPath)
+                this.webBrowserDriver = ChromeDriver()
+                this.webBrowserDriver.get(url)
 
+            }
+
+            Browsers.safari ->{
+                System.setProperty("webdriver.safari.driver", this.config.tromProperties.safariDriverPath)
+                this.webBrowserDriver = SafariDriver()
+                this.webBrowserDriver.get(url)
+
+            }
+
+            Browsers.edge -> {
+                System.setProperty("webdriver.edge.driver", this.config.tromProperties.edgeDriverPath)
+                this.webBrowserDriver = EdgeDriver()
+                this.webBrowserDriver.get(url)
+            }
         }
 
+        this.webBrowserDriver.manage().window().maximize()
+
+    }
+
+    fun closeBrowser(){
+        this.webBrowserDriver.quit()
     }
 
     fun executeTestStep(testStep: TestStep) {
@@ -63,7 +88,7 @@ class TestStepRunner {
                 ActionType.click -> this.getElement(testStep)!!.click()
                 ActionType.waitForElement -> {
                     val wait = FluentWait(this.webBrowserDriver)
-                            .withTimeout(Duration.ofSeconds(30))
+                            .withTimeout(Duration.ofSeconds(10))
                             .pollingEvery(Duration.ofSeconds(3))
                             .ignoring(NoSuchElementException::class.java)
                     wait.until(ExpectedConditions.visibilityOfElementLocated(this.getBy(testStep)))
@@ -79,7 +104,9 @@ class TestStepRunner {
         }catch (exception: Exception){
             //FIXME: Move all these pass, fail logging and screenshot to a Report wrapper
             val temp= this.config.screenShotUtil.getScreenShot(this.webBrowserDriver);
-            this.config.currentTest.fail("Test step ${testStep.name} failed " + exception.message, MediaEntityBuilder.createScreenCaptureFromPath(temp).build())
+            LOG.info("Capturing screenshot for the failing test from path ${temp}")
+            this.config.currentTest.fail("Test step ${testStep.name} failed " , MediaEntityBuilder.createScreenCaptureFromBase64String(temp).build())
+            this.config.currentTest.fail(exception.message)
         }
 
 

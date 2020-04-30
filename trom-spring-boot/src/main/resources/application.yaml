@@ -1,0 +1,9 @@
+server:
+  port: 9003
+trom:
+  rootPath: examples
+  firefoxDriverPath: "/Users/SpeelYaal/Technology/Workspace/Tools/selenium/geckodriver"
+  chromeDriverPath: "/Users/SpeelYaal/Technology/Workspace/Tools/selenium/chromedriver_81"
+  safariDriverPath: "/usr/bin/safaridriver"
+  edgeDriverPath: "/Users/SpeelYaal/Technology/Workspace/Tools/selenium/msedgedriver"
+

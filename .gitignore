@@ -31,3 +31,10 @@ out/
 ### VS Code ###
 .vscode/
 .DS_Store
+
+report*.html
+
+*-local.yaml
+*-local.yml
+
+*.png

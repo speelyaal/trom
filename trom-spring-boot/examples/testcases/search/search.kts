@@ -23,11 +23,11 @@ testCase("Search") {
         click ("Click Trom repository Link"){
             element= linkText("trom")
         }.waitForElement{
-            element= linkText("trom-spring-boot2")
+            element= linkText("trom-spring-boot")
         }
 
         click("Trom Spring Boot Appliation"){
-            element= linkText("trom-spring-boot2")
+            element= linkText("trom-spring-boot")
         }
 
 

@@ -6,6 +6,7 @@ import com.aventstack.extentreports.reporter.ExtentAventReporter
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter
 import com.speelyaal.trom.dsl.TestCase
 import com.speelyaal.trom.dsl.TestSuite
+import com.speelyaal.trom.report.ScreenShotUtil
 import com.speelyaal.trom.runners.KotlinScriptRunner
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
@@ -28,11 +29,15 @@ class ConfigLoader {
     var testCases: HashMap<String, TestCase> = HashMap()
     lateinit var testReport: ExtentReports
     lateinit var currentTest: ExtentTest
+    var screenShotUtil: ScreenShotUtil = ScreenShotUtil()
 
     lateinit var firefoxDriver: FirefoxDriver
 
     @PostConstruct
     private fun loadConfigurations(){
+
+
+        this.screenShotUtil.filePath = tromProperties.rootPath;
 
         File(tromProperties.rootPath + "/suites").walk().forEach {testSuiteFile ->
             if(testSuiteFile.isFile && testSuiteFile.extension == "kts") {
@@ -63,8 +68,7 @@ class ConfigLoader {
 
         this.testReport = ExtentReports()
      //   val avent = ExtentAventReporter(tromProperties.rootPath + "/reports")
-        val htmlReporter = ExtentHtmlReporter(tromProperties.rootPath + "/reports/report.html")
-        this.testReport.attachReporter(htmlReporter)
+
 
     }
 

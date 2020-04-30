@@ -1,5 +1,6 @@
 package com.speelyaal.trom.runners
 
+import com.aventstack.extentreports.MediaEntityBuilder
 import com.speelyaal.trom.config.ConfigLoader
 import com.speelyaal.trom.config.TromProperties
 import com.speelyaal.trom.dsl.ActionType
@@ -65,7 +66,7 @@ class TestStepRunner {
                             .withTimeout(Duration.ofSeconds(30))
                             .pollingEvery(Duration.ofSeconds(3))
                             .ignoring(NoSuchElementException::class.java)
-                    wait.until(ExpectedConditions.elementToBeClickable(this.getBy(testStep)))
+                    wait.until(ExpectedConditions.visibilityOfElementLocated(this.getBy(testStep)))
 
                     LOG.debug("I am waiting until this appear ${testStep.element}")
                 }
@@ -76,7 +77,9 @@ class TestStepRunner {
             }
             this.config.currentTest.pass("Test step ${testStep.name} passed ")
         }catch (exception: Exception){
-            this.config.currentTest.fail("Test step ${testStep.name} failed " + exception.message)
+            //FIXME: Move all these pass, fail logging and screenshot to a Report wrapper
+            val temp= this.config.screenShotUtil.getScreenShot(this.webBrowserDriver);
+            this.config.currentTest.fail("Test step ${testStep.name} failed " + exception.message, MediaEntityBuilder.createScreenCaptureFromPath(temp).build())
         }
 
 

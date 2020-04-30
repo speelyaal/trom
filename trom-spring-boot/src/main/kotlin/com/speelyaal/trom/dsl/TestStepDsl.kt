@@ -58,7 +58,7 @@ class TestStep(var name: String="") {
 
     fun containsText(textValue: String=""): String{
         this.selectorType = SelectorType.xpath
-        return "//*[contains(text(), '${textValue}')]"
+        return "//*[text()[contains(., '${textValue}')]]"
     }
 
 

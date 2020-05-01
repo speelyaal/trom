@@ -121,7 +121,10 @@ class TestStepRunner {
             SelectorType.id ->  this.webBrowserDriver.findElementById(selectorString)
             SelectorType.css ->   this.webBrowserDriver.findElementByCssSelector(selectorString)
             SelectorType.linkText ->  this.webBrowserDriver.findElementByPartialLinkText(selectorString)
-            else -> null
+            else -> {
+                this.config.currentTest.fail("Test step ${testStep.name} failed, Unable to find element ${selectorString} by ${testStep.selectorType}")
+                return  null
+            }
         }
 
 
